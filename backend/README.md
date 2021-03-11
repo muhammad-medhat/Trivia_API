@@ -56,10 +56,11 @@ flask run
 ```
 ### GET '/categories/<int:category_id>/questions'
 - Fetches an array of questions of a certain category
-- Request Arguments: None
+- Request Arguments: category_id
 - Returns: A key for questions objects and ket for success value and another key for total results. 
 
-#### Example 
+##### Example output
+
 http://127.0.0.1:5000/categories/2/questions.
 ```
 {
@@ -85,7 +86,8 @@ http://127.0.0.1:5000/categories/2/questions.
     - questions
     - total_questions
 
-#### Example 
+##### Example output
+
 ```{
     "categories": {
         "1": "Science",
@@ -104,11 +106,13 @@ http://127.0.0.1:5000/categories/2/questions.
         
     ],
     "total_questions": 22
-}```
-
+}
+```
 ### POST '/questions'
 
-- An endpoint to POST a new question
+- This endpoint will be responsible for adding a new question, and searching for a question.
+- it depends on the input request body
+#### Adding a new question
 - Require  a request body that contains
     - The question text
     - An answer text.
@@ -120,9 +124,11 @@ http://127.0.0.1:5000/categories/2/questions.
     - success
     - total_questions
 
-#### Example 
+##### Example output
+ 
 
-```{
+```
+{
     "body": {
         "answer": "The Pythoneer!",
         "category": 1,
@@ -133,5 +139,63 @@ http://127.0.0.1:5000/categories/2/questions.
     "success": true,
     "total_questions": 23
 }
+```
+#### Search for question
+- This endpoint get questions based on a search term. 
+- Require  a request body that contains the searchterm as follows
+```
+{'search':'the'}
+```
+- Returns: It should return any questions(paginated) for whom the search term is a substring of the question.:
+    - questions
+    - success
+    - total_questions
+
+##### Example output
 
 ```
+{
+    "questions": [
+        {
+            "answer": "Tom Cruise",
+            "category": 5,
+            "difficulty": 4,
+            "id": 4,
+            "question": "..."
+        }, 
+        ...
+    ],
+    "success": true,
+    "total_results": 10
+
+```
+
+### POST '/quizzes'
+- Retrieve questions to play the quiz. 
+- This endpoint take category and previous question parameters.
+- Request body example
+```
+    {
+        "category": "2",
+        "previous_questions": ["16", "17"]
+    }
+```
+- Return: a random questions within the given category, if provided, and that is not one of the previous questions
+
+##### Example output
+```
+{
+    "question": {
+        "answer": "One",
+        "category": 2,
+        "difficulty": 4,
+        "id": 18,
+        "question": "How many paintings did Van Gogh sell in his lifetime?"
+    },
+    "success": true
+}
+```
+
+### DELETE '/questions/<int:question_id>'
+- An endpoint to DELETE question using a question ID.
+- __Request Argement__ question_id
