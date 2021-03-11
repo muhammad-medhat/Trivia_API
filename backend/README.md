@@ -43,13 +43,13 @@ flask run
 ### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. {'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
-
+    - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. ```{'1' : "Science",
+    '2' : "Art",
+    '3' : "Geography",
+    '4' : "History",
+    '5' : "Entertainment",
+    '6' : "Sports"}
+```
 ### GET '/categories/<int:category_id>/questions'
 - Fetches an array of questions of a certain category
 - Request Arguments: None
@@ -57,7 +57,7 @@ flask run
 
 #### Example 
 http://127.0.0.1:5000/categories/2/questions.
-
+```
 {
     "questions": [
         {
@@ -71,7 +71,7 @@ http://127.0.0.1:5000/categories/2/questions.
     "success": true,
     "total_results": 4
 }
-
+```
 ### GET  '/questions'
 - Fetches paginated questions
 - Request Arguments: page
@@ -82,7 +82,7 @@ http://127.0.0.1:5000/categories/2/questions.
     - total_questions
 
 #### Example 
-{
+```{
     "categories": {
         "1": "Science",
         ...
@@ -100,4 +100,4 @@ http://127.0.0.1:5000/categories/2/questions.
         
     ],
     "total_questions": 22
-}
+}```
