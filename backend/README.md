@@ -45,12 +45,14 @@ flask run
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
 ```
-{'1' : "Science",
-    '2' : "Art",
-    '3' : "Geography",
-    '4' : "History",
-    '5' : "Entertainment",
-    '6' : "Sports"}
+    {
+        '1' : "Science",
+        '2' : "Art",
+        '3' : "Geography", 
+        '4' : "History",
+        '5' : "Entertainment",
+        '6' : "Sports"
+    }
 ```
 ### GET '/categories/<int:category_id>/questions'
 - Fetches an array of questions of a certain category
@@ -103,3 +105,33 @@ http://127.0.0.1:5000/categories/2/questions.
     ],
     "total_questions": 22
 }```
+
+### POST '/questions'
+
+- An endpoint to POST a new question
+- Require  a request body that contains
+    - The question text
+    - An answer text.
+    - Category
+    - Difficulty score.
+- Request Arguments: None
+- Returns: A json object with the following keys:
+    - body
+    - success
+    - total_questions
+
+#### Example 
+
+```{
+    "body": {
+        "answer": "The Pythoneer!",
+        "category": 1,
+        "difficulty": 1,
+        "id": 28,
+        "question": "What is your nickname? "
+    },
+    "success": true,
+    "total_questions": 23
+}
+
+```
