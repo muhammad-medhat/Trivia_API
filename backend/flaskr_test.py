@@ -40,12 +40,7 @@ class TriviaTestCase(unittest.TestCase):
         Executed after reach test
         Run this script after each test
         """
-        # import os
-        # os.system('ls -l')
-        # rc = call('./run.sh', shell=True)
-        
-        # db.session.execute("ALTER SEQUENCE test_id_seq RESTART WITH 1")
-        # db.session.commit()
+
 
         pass
     
@@ -57,8 +52,7 @@ class TriviaTestCase(unittest.TestCase):
     
     def test_get_paginated_questions(self):
         res = self.client().get('/questions')
-        data = json.loads(res.data)
-        
+        data = json.loads(res.data)        
         self.assertEqual(res.status_code, 200)   
         self.assertTrue(len(data['questions']), 10)   
         self.assertTrue(data['categories'], True)   
@@ -66,8 +60,7 @@ class TriviaTestCase(unittest.TestCase):
         
     def test_get_questions_404(self):
         res = self.client().get('/questions?page=1000')
-        data = json.loads(res.data)
-        
+        data = json.loads(res.data)        
         self.assertEqual(res.status_code, 404)   
         self.assertEqual(data['success'], False)   
         self.assertEqual(data['message'], 'Not Found')   
@@ -88,8 +81,12 @@ class TriviaTestCase(unittest.TestCase):
     def test_delete_questions(self):
         res = self.client().delete('/questions/1')
         data = json.loads(res.data)
-
         self.assertEqual(data['success'], True)   
+
+    def test_delete_questions_404(self):
+        res = self.client().delete('/questions/1')
+        data = json.loads(res.data)
+        self.assertEqual(data['success'], False)   
     
     def test_post_search_questions_with_results(self):
         res = self.client().post('/questions', json={'search':'known'})

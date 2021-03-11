@@ -103,9 +103,13 @@ class Category(db.Model):
       db.session.rollback()
 
   def format(self):
-    return {
+        return {
       'id': self.id,
       'type': self.type
+    }
+  def pformat(self):
+    return {
+      str(self.id): self.type
     }
   def category_exists(cat_id):
       

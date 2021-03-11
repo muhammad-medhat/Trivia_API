@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, abort, jsonify
+from sqlalchemy.sql.expression import select
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
@@ -46,13 +47,17 @@ def create_app(test_config=None):
     #? Create an endpoint to handle GET requests 
     #? for all available categories.
     '''
-    @app.route('/categories', methods=['GET'])
-    def get_categories():
+    def get_categories_dict():
         selection = Category.query.order_by(Category.id).all()
-        if len(selection) == 0:
+        return {cat.id: cat.type for cat in selection}
+        
+    @app.route('/categories', methods=['GET'])
+    def get_request_categories():
+        categories_count = Category.query.order_by(Category.id).count()
+        if categories_count == 0:
             abort(404)
         return jsonify({
-            'categories':[{str(cat.id): cat.type} for cat in selection]                
+            'categories':get_categories_dict()
         })
 
     '''
@@ -73,8 +78,7 @@ def create_app(test_config=None):
         categories = Category.query.all()
         questions = Question.query.all()
         
-        formated_categories = [c.format() for c in categories]  
-        # print(formated_categories) 
+        formated_categories = get_categories_dict()
         formated_questions = [q.format() for q in questions]   
         display = paginate(request, formated_questions)
         
@@ -220,7 +224,6 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def start_quiz():
         body = request.get_json()            
-        # print(body)
 
         if body:
             category           = body.get('category', None)
