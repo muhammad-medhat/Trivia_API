@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 database_name = "trivia"
-database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+database_path = "postgres://postgres:1111@{}/{}".format('localhost:5432', database_name)
 
 db = SQLAlchemy()
 
@@ -32,22 +32,33 @@ class Question(db.Model):
   category = Column(String)
   difficulty = Column(Integer)
 
-  def __init__(self, question, answer, category, difficulty):
+  def __init__(self, id, question, answer, category, difficulty):
+    self.id = id
     self.question = question
     self.answer = answer
     self.category = category
     self.difficulty = difficulty
 
   def insert(self):
-    db.session.add(self)
-    db.session.commit()
+      try:
+        db.session.add(self)
+        db.session.commit()
+      except:
+        db.session.rollback()
+          
   
   def update(self):
-    db.session.commit()
+      try:
+        db.session.commit()
+      except:
+        db.session.rollback()
 
   def delete(self):
-    db.session.delete(self)
-    db.session.commit()
+    try:
+      db.session.delete(self)
+      db.session.commit()
+    except:
+      db.session.rollback()
 
   def format(self):
     return {
@@ -70,9 +81,33 @@ class Category(db.Model):
 
   def __init__(self, type):
     self.type = type
+    
+  def insert(self):
+    try:
+      db.session.add(self)
+      db.session.commit()
+    except:
+      db.session.rollback()
+          
+  def update(self):
+      try:
+        db.session.commit()
+      except:
+        db.session.rollback()
+
+  def delete(self):
+    try:
+      db.session.delete(self)
+      db.session.commit()
+    except:
+      db.session.rollback()
 
   def format(self):
     return {
       'id': self.id,
       'type': self.type
     }
+  def category_exists(cat_id):
+      
+    exists = db.session.query(Category.id).filter_by(id=cat_id).first() is not None
+    return (exists)
