@@ -26,7 +26,10 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
         return response
-
+    def get_categories_dict():
+        selection = Category.query.order_by(Category.id).all()
+        return {cat.id: cat.type for cat in selection}
+    
     def paginate(req, selection):
         """ 
         Paginate the obtained results 
@@ -47,9 +50,7 @@ def create_app(test_config=None):
     #? Create an endpoint to handle GET requests 
     #? for all available categories.
     '''
-    def get_categories_dict():
-        selection = Category.query.order_by(Category.id).all()
-        return {cat.id: cat.type for cat in selection}
+
         
     @app.route('/categories', methods=['GET'])
     def get_request_categories():
