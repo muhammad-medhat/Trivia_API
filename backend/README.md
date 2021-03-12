@@ -23,7 +23,14 @@ psql trivia < trivia.psql
 
 ## Running the server
 
-From within the `backend` directory first ensure you are working using your created virtual environment.
+- From within the `backend` directory first ensure you are working using your created virtual environment.
+- ****IMP*:*** to avoid the error 
+ ```AttributeError: module 'time' has no attribute 'clock'```
+Edit line ***331*** in file **backend/venv/Lib/site-packages/sqlalchemy/util/compat.py**
+``` 
+    From: time_func = time.clock
+    To:   time_func = time.perf_counter()
+```
 
 To run the server, execute:
 
