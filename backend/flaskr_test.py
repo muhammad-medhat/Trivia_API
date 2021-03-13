@@ -77,7 +77,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)   
         self.assertEqual(data['success'], False)   
 
-
     def test_delete_questions(self):
         res = self.client().delete('/questions/1')
         data = json.loads(res.data)
@@ -108,8 +107,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(len(data['questions']), 0)   
         self.assertEqual(data['total_results'], 0)   
     
-    
-
     def test_get_questions_by_category_with_results(self):
         res = self.client().get('/categories/2/questions')
         data = json.loads(res.data)
@@ -143,8 +140,27 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['question'])
         self.assertTrue(data['success'])   
         
+    def test_put_patch_question(self):
+        res = self.client().put('/questions/12', json={"answer": "Updated New Answer"})
+        data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 200) 
+        self.assertTrue(data['question'])
+        self.assertEqual(data['success'], True)
+    
+    def test_put_question_with_error_404(self):
+        res = self.client().put('/questions/2', json={"answer": "Updated New Answer"})
+        data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 404) 
+        self.assertEqual(data['success'], False)
+
+    def test_put_question_with_error_400(self):
+        res = self.client().put('/questions/12', json={})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400) 
+        self.assertEqual(data['success'], False)
 
 
 # Make the tests conveniently executable

@@ -15,13 +15,13 @@ to install the packages required to run the application simply run the following
 pip install -r requirements.txt
 ```
 
-## Database Setup
+#### Database Setup
 With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
 ```bash
 psql trivia < trivia.psql
 ```
 
-## Running the server
+#### Running the server
 
 - From within the `backend` directory first ensure you are working using your created virtual environment.
 - ****IMP*:*** to avoid the error 
@@ -39,13 +39,15 @@ export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
 ```
-### API Endpoints
+## API Endpoints
 - GET     '/categories'
 - GET     '/categories/<int:category_id>/questions'
 - GET     '/questions'
 - POST    '/questions'
 - POST    '/quizzes'
 - DELETE  '/questions'
+- PATCH   '/questions/<int:question_id>'
+- PUT     '/questions/<int:question_id>'
 
 ### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
@@ -61,6 +63,7 @@ flask run
         '6' : "Sports"
     }
 ```
+
 ### GET '/categories/<int:category_id>/questions'
 - Fetches an array of questions of a certain category
 - Request Arguments: category_id
@@ -84,6 +87,7 @@ http://127.0.0.1:5000/categories/2/questions.
     "total_results": 4
 }
 ```
+
 ### GET  '/questions'
 - Fetches paginated questions
 - Request Arguments: page
@@ -115,6 +119,7 @@ http://127.0.0.1:5000/categories/2/questions.
     "total_questions": 22
 }
 ```
+
 ### POST '/questions'
 
 - This endpoint will be responsible for adding a new question, and searching for a question.
@@ -206,3 +211,39 @@ http://127.0.0.1:5000/categories/2/questions.
 ### DELETE '/questions/<int:question_id>'
 - An endpoint to DELETE question using a question ID.
 - __Request Argement__ question_id
+
+### PATCH/PUT '/questions/<int:question_id>'
+- An endpoint to update or modify answer for a question using a question ID.
+- __Request Argement__ question_id
+##### Example output
+- The updated question with the status of request
+- the next output is the result of sending a patch request for a question with id 11
+```
+{
+    "question": {
+        "answer": "new updated answer",
+        "category": 6,
+        "difficulty": 4,
+        "id": 11,
+        "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    "success": true
+}
+```
+
+## Error handlers
+
+The following are the list of errors handld in this api, for a full list of errors can be found in this [MDN article](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+- 400 -- Bad request
+- 404 -- Not found
+- 422 -- Not processable
+- 500 -- Internal Server Error
+    _Each error returns a json responce with its message_
+     **For 500 response output**
+
+```
+{
+    'success': False,
+    'message': 'Internal Server Error'
+}
+```
